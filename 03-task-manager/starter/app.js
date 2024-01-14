@@ -3,6 +3,8 @@ const app = express();
 const tasks = require("./routes/tasks");
 const connectDB = require("./db/connect");
 require("dotenv").config();
+const notFound = require("./middleware/not-found");
+const errorHanflerMiddleware = require("./middleware/error-handler");
 
 // milddleware
 app.use(express.static("./public"));
@@ -12,13 +14,10 @@ app.use(express.json());
 
 app.use("/api/v1/tasks", tasks);
 
-// app.get('/api/v1/tasks)
-// app.post('/api/v1/tasks)
-// app.get('/api/v1/tasks/:id)
-// app.patch('/api/v1/tasks/:id)
-// app.delete('/api/v1/tasks/:id)
+app.use(notFound);
+app.use(errorHanflerMiddleware);
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
